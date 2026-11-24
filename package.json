@@ -1,1 +1,19 @@
-{"name":"mam-neural-lab","version":"0.1.0","private":true,"description":"A local visual neural learning classroom","license":"MIT","scripts":{"start":"electron scripts/classroom.cjs","test":"node --test scripts/classroom.test.mjs","train":"node scripts/classroom-train.mjs","test:ui":"node scripts/classroom-smoke.mjs","test:transfer":"node scripts/classroom-transfer.mjs"},"devDependencies":{"electron":"42.11.18","playwright":"1.65.1"}}
+{
+  "name": "mam-neural-lab",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A local visual neural learning classroom",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron scripts/classroom.cjs",
+    "test": "node --test scripts/classroom.test.mjs tests/language.test.mjs",
+    "train": "node scripts/classroom-train.mjs",
+    "test:ui": "node scripts/classroom-smoke.mjs",
+    "test:transfer": "node scripts/classroom-transfer.mjs",
+    "train:language": "node scripts/language-experiment.mjs"
+  },
+  "devDependencies": {
+    "electron": "42.11.18",
+    "playwright": "1.65.1"
+  }
+}
