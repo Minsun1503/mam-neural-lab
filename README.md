@@ -24,7 +24,9 @@ The classroom trains a 64 → 64 → 20 neural policy from demonstrations, then 
 
 Stage 2 has both an initial character-level experiment and a context-conditioned word-level generator in `language/`. The latter generates token by token from learned weights and currently covers eight bounded task-dialogue families. Run `npm run train:dialogue`, then `npm run chat` to open the experimental conversation window. It creates two independent weight instances, allows individual supervised corrections, and can feed their generated messages to each other. Repetition detection stops unproductive loops. No training checkpoint or private dialogues are committed.
 
-The eight held-out prompts are a small compositional test, not a conversational benchmark. The model does not yet have long-turn memory, general Vietnamese comprehension, or proven cooperative problem solving. Stage 3 remains outstanding. Fixed dialogue templates must not be presented as learned language.
+The eight held-out prompts are a small compositional test, not a conversational benchmark. The production model still lacks broad Vietnamese comprehension. Order-sensitive language candidates and bounded per-agent episode memory are research experiments; they are not automatically promoted over a better existing model.
+
+A first **bounded cooperation experiment** now teaches separate neural tool policies and word decoders to exchange file contents and verify the result. Run `npm run test:cooperation` or use the cooperation panel in `npm run chat`. It passes forty normal held-out file transfers and fails appropriately when messages, payloads or data-message wording are corrupted. Parameter copying/quote parsing are explicit adapters. This is one protocol, not general collaboration; see [details](docs/cooperation-experiment.md). Fixed dialogue templates must not be presented as learned language.
 
 ## Attribution and data
 

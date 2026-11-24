@@ -6,4 +6,6 @@
 <form id="form"><label>Người nhận <select id="agent"><option>A</option><option>B</option></select></label><input id="message" maxlength="2000" placeholder="Ví dụ: giúp mình lưu tệp ghi chú" required><button id="send">Gửi</button></form>
 <section class="controls"><button id="talk" disabled>Cho A và B trao đổi 6 lượt</button><button id="stop">Dừng</button><button id="save" disabled>Lưu hai bộ trọng số</button></section>
 <details><summary>Dạy sửa câu trả lời cho cá thể đang chọn</summary><p>Câu sửa phải nằm trong từ vựng hiện có. Chỉ cá thể đang chọn được cập nhật; có thể làm quên bài cũ.</p><input id="correction" placeholder="Câu trả lời mong muốn"><button id="teach" disabled>Dạy 20 bước</button></details>
-<p id="status">Đang nạp bộ não ngôn ngữ…</p><script type="module" src="conversation.mjs"></script></body></html>
+<p id="status">Đang nạp bộ não ngôn ngữ…</p>
+<details><summary>Bài phối hợp có kiểm chứng</summary><p>Thí nghiệm riêng: dạy hai chính sách đọc/ghi, cho trao đổi nội dung rồi kiểm tra tệp thật. Không dùng hoặc thay đổi các sửa câu A/B ở phía trên.</p><button id="cooperate">Dạy và thi phối hợp</button><div id="cooperation-result"></div></details>
+<script type="module" src="conversation.mjs"></script></body></html>

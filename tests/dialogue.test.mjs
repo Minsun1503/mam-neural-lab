@@ -2,6 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {ConditionedRNN,tokenize} from '../language/conditioned-rnn.mjs';
 import {DialogueSession} from '../language/dialogue-session.mjs';
+test('order-sensitive encoders learn different continuations for reversed input words',()=>{
+ for(const mode of ['sequence','ngram']){
+  const model=new ConditionedRNN(['a','b','x','y','§a|b','§b|a'],12);model.encoderMode=mode;
+  for(let i=0;i<900;i++){model.train('a b','x',.03);model.train('b a','y',.03);}
+  assert.equal(model.reply('a b').text,'x');assert.equal(model.reply('b a').text,'y');
+  const restored=ConditionedRNN.restore(JSON.parse(JSON.stringify(model.serialize())));
+  assert.equal(restored.encoderMode,mode);assert.equal(restored.reply('a b').text,'x');
+  assert.ok(!restored.reply('a b').text.includes('§'));
+ }
+});
 test('conditioning learns different responses and individual corrections preserve partner weights',()=>{
   const examples=[['chủ: lưu?\nmầm:','lưu tệp.'],['chủ: chào?\nmầm:','chào bạn.']];
   const model=new ConditionedRNN(examples.flatMap(pair=>tokenize(pair.join(' '))),16);

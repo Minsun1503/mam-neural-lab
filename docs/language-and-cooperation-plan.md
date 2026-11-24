@@ -1,6 +1,6 @@
 # Vietnamese language and cooperation: acceptance plan
 
-This is the next phase, not an implemented capability.
+These are acceptance criteria for the full objective, which is not yet complete. The repository now contains bounded dialogue and cooperative file-transfer experiments; see `dialogue-experiments.md`, `context-experiment.md` and `cooperation-experiment.md` for measured scope and remaining failures.
 
 The existing policy only consumes structured feature vectors. A second copy does not acquire language merely by exchanging strings. Vietnamese generation needs a learned token model and comprehension needs testing against unseen utterances, rather than selecting prewritten reply templates.
 

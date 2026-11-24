@@ -46,6 +46,16 @@ app.whenReady().then(async () => {
     await fs.writeFile(path.join(directory,'dialogue-pair.json.tmp'),payload);
     await fs.rename(path.join(directory,'dialogue-pair.json.tmp'),path.join(directory,'dialogue-pair.json'));return true;
   });
+  let cooperationRunning=false;
+  ipcMain.handle('cooperation:run',async event=>{
+    if(event.sender.id!==window.webContents.id||cooperationRunning)throw new Error('Cooperation run unavailable');
+    cooperationRunning=true;
+    try{
+      const {promisify}=require('node:util'),{execFile}=require('node:child_process');
+      await promisify(execFile)(process.execPath,[path.join(__dirname,'cooperation-experiment.mjs')],{cwd:path.join(__dirname,'..'),env:{...process.env,ELECTRON_RUN_AS_NODE:'1'},timeout:60000,maxBuffer:1024*1024});
+      return JSON.parse(await fs.readFile(path.join(__dirname,'../outputs/cooperation/report.json'),'utf8'));
+    }finally{cooperationRunning=false;}
+  });
   await window.loadFile(path.join(__dirname, process.argv.includes('--conversation')?'../frontend/src/classroom/conversation.html':'../frontend/src/classroom/index.html'));
 });
 app.on('window-all-closed', () => app.quit());

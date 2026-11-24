@@ -11,7 +11,7 @@ try{
  await page.locator('#message').fill('giúp mình lưu tệp ghi chú');await page.locator('#send').click();
  assert.match(await page.locator('#messages').innerText(),/tệp/);
  const b=await page.locator('#b').innerText();
- await page.locator('summary').click();await page.locator('#correction').fill('mình sẽ lưu tệp rồi đọc lại để kiểm tra.');await page.locator('#teach').click();
+ await page.locator('summary').first().click();await page.locator('#correction').fill('mình sẽ lưu tệp rồi đọc lại để kiểm tra.');await page.locator('#teach').click();
  assert.equal(await page.locator('#b').innerText(),b);
  await page.locator('#save').click();await page.waitForFunction(()=>document.querySelector('#status').textContent.includes('Đã lưu'));
  const a=await page.locator('#a').innerText();await page.reload();await page.waitForFunction(()=>!document.querySelector('#talk').disabled);
@@ -19,8 +19,12 @@ try{
  await page.locator('#message').fill('bạn cần dữ liệu gì');await page.locator('#talk').click();
  await page.waitForFunction(()=>!document.querySelector('#talk').disabled);
  const turns=await page.locator('.turn').count();assert.ok(turns>=3&&turns<=6);
+ await page.locator('summary').nth(1).click();await page.locator('#cooperate').click();
+ await page.waitForFunction(()=>!document.querySelector('#cooperate').disabled);
+ assert.ok((await page.locator('#cooperation-result').innerText()).includes('normal: 40/40'));
+ assert.ok((await page.locator('#cooperation-result').innerText()).includes('info-prefix-scramble: 0/40'));
  assert.deepEqual(errors,[]);
  const out=path.join(root,'outputs/language');await page.screenshot({path:path.join(out,'dialogue.png'),fullPage:true});
- const report={generatedTurns:turns,independentCorrection:true,persistence:true,rendererErrors:errors,scope:'Bounded task dialogue, not cooperation'};
+ const report={generatedTurns:turns,independentCorrection:true,persistence:true,cooperationExperiment:true,rendererErrors:errors,scope:'Bounded task dialogue and separate causal protocol experiment, not general conversation'};
  await fs.writeFile(path.join(out,'dialogue-smoke.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));
 }finally{await app.close();}

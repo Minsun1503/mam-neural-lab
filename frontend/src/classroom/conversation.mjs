@@ -10,4 +10,12 @@ $('talk').onclick=async()=>{if(!session||busy)return;busy=true;stop=false;update
 $('stop').onclick=()=>{stop=true;};
 $('teach').onclick=()=>{try{session.teach($('agent').value,$('message').value,$('correction').value);update();status(`Đã cập nhật riêng Mầm ${$('agent').value}; chưa tự lưu.`);}catch(error){status(error.message);}};
 $('save').onclick=async()=>{try{await window.classroomFiles.saveDialogue(JSON.stringify(session.serialize()));status('Đã lưu hai bộ trọng số riêng trên máy này.');}catch(error){status(error.message);}};
+$('cooperate').onclick=async()=>{
+  $('cooperate').disabled=true;const host=$('cooperation-result');host.textContent='Đang dạy và chạy các lượt kiểm chứng trên tệp thử nghiệm…';
+  try{const report=await window.classroomFiles.runCooperation();host.replaceChildren();
+    for(const [mode,result]of Object.entries(report.summary)){const p=document.createElement('p');p.textContent=`${mode}: ${result.passed}/${result.total}`;host.append(p);}
+    const title=document.createElement('p');title.textContent='Nhật ký lượt đã chạy (câu do mạng sinh; phần nội dung trong ngoặc kép do adapter sao chép):';host.append(title);
+    for(const item of report.results.find(r=>r.mode==='normal').messages){const p=document.createElement('p');p.textContent=`${item.from} → ${item.to}: ${item.text}`;host.append(p);}
+  }catch(error){host.textContent=error.message;}finally{$('cooperate').disabled=false;}
+};
 try{const checkpoint=await window.classroomFiles.loadDialogue();session=new DialogueSession(checkpoint.A??checkpoint);if(checkpoint.B){const {ConditionedRNN}=await import('../../../language/conditioned-rnn.mjs');session.agents.B=ConditionedRNN.restore(checkpoint.B);}status('Đã nạp mô hình. Bạn có thể nhập câu hỏi mới hoặc cho hai cá thể trao đổi.');update();}catch(error){status(`Chưa nạp được: ${error.message}. Chạy npm run train:dialogue trước.`);$('send').disabled=true;}
