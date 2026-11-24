@@ -1,0 +1,23 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {ConditionedRNN,tokenize} from '../language/conditioned-rnn.mjs';
+import {DialogueSession} from '../language/dialogue-session.mjs';
+test('conditioning learns different responses and individual corrections preserve partner weights',()=>{
+  const examples=[['chủ: lưu?\nmầm:','lưu tệp.'],['chủ: chào?\nmầm:','chào bạn.']];
+  const model=new ConditionedRNN(examples.flatMap(pair=>tokenize(pair.join(' '))),16);
+  const before=[...model.context];
+  for(let i=0;i<250;i++)for(const [prompt,reply]of examples)model.train(prompt,reply,.03);
+  assert.notDeepEqual([...model.context],before);
+  assert.ok(model.reply(examples[0][0]).text.includes('tệp'));
+  assert.ok(model.reply(examples[1][0]).text.includes('chào'));
+  const session=new DialogueSession(JSON.parse(JSON.stringify(model.serialize())));
+  assert.notEqual(session.agents.A.embedding,session.agents.B.embedding);
+  const frozenB=JSON.stringify(session.agents.B.serialize()),frozenA=JSON.stringify(session.agents.A.serialize());
+  session.respond('A','lưu');assert.equal(JSON.stringify(session.agents.A.serialize()),frozenA);
+  session.teach('A','lưu','lưu tệp.',2);
+  assert.notEqual(JSON.stringify(session.agents.A.serialize()),frozenA);
+  assert.equal(JSON.stringify(session.agents.B.serialize()),frozenB);
+  assert.throws(()=>session.teach('A','lưu','một từ hoàn toàn lạ'));
+  const restore=ConditionedRNN.restore(session.agents.A.serialize());
+  assert.equal(restore.reply(examples[0][0]).text,session.agents.A.reply(examples[0][0]).text);
+});

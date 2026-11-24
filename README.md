@@ -22,7 +22,9 @@ The classroom trains a 64 → 64 → 20 neural policy from demonstrations, then 
 2. Learned Vietnamese generation and comprehension with honest held-out conversation evaluation.
 3. Two independent brains, explicit communication, and cooperative tasks tested against communication-disabled baselines.
 
-Stage 2 has an initial character-level recurrent neural experiment in `language/`. Run `node scripts/language-experiment.mjs`; it trains from the public synthetic CC0 seed corpus and writes local checkpoints and generated samples. It learns character patterns but currently produces malformed, weakly conditioned replies. It is **not conversational competence**. Stage 3 is not implemented yet. Fixed dialogue templates must not be presented as learned language.
+Stage 2 has both an initial character-level experiment and a context-conditioned word-level generator in `language/`. The latter generates token by token from learned weights and currently covers eight bounded task-dialogue families. Run `npm run train:dialogue`, then `npm run chat` to open the experimental conversation window. It creates two independent weight instances, allows individual supervised corrections, and can feed their generated messages to each other. Repetition detection stops unproductive loops. No training checkpoint or private dialogues are committed.
+
+The eight held-out prompts are a small compositional test, not a conversational benchmark. The model does not yet have long-turn memory, general Vietnamese comprehension, or proven cooperative problem solving. Stage 3 remains outstanding. Fixed dialogue templates must not be presented as learned language.
 
 ## Attribution and data
 

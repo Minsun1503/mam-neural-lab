@@ -1,0 +1,9 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'"><title>Mầm Lab · Đối thoại thử nghiệm</title><link rel="stylesheet" href="conversation.css"></head><body>
+<header><span>MẦM LAB / THỬ NGHIỆM NGÔN NGỮ</span><h1>Hai cá thể, hai bộ trọng số.</h1><p>Sinh từng từ bằng mạng hồi quy được dạy từ đầu · Không API · Không bảng trả lời lúc chạy</p></header>
+<section class="identities"><article><b>◈ Mầm A</b><p id="a">Đang nạp…</p></article><article><b>◈ Mầm B</b><p id="b">Đang nạp…</p></article></section>
+<div class="notice">Bản thử nghiệm chỉ học 8 nhóm đối thoại về công việc. Chưa hiểu ngôn ngữ mở, chưa có trí nhớ hội thoại dài hay khả năng hợp tác được chứng minh. Hai cá thể bắt đầu từ cùng checkpoint nhưng thay đổi trọng số độc lập.</div>
+<section id="messages" role="log" aria-live="polite"></section>
+<form id="form"><label>Người nhận <select id="agent"><option>A</option><option>B</option></select></label><input id="message" maxlength="2000" placeholder="Ví dụ: giúp mình lưu tệp ghi chú" required><button id="send">Gửi</button></form>
+<section class="controls"><button id="talk" disabled>Cho A và B trao đổi 6 lượt</button><button id="stop">Dừng</button><button id="save" disabled>Lưu hai bộ trọng số</button></section>
+<details><summary>Dạy sửa câu trả lời cho cá thể đang chọn</summary><p>Câu sửa phải nằm trong từ vựng hiện có. Chỉ cá thể đang chọn được cập nhật; có thể làm quên bài cũ.</p><input id="correction" placeholder="Câu trả lời mong muốn"><button id="teach" disabled>Dạy 20 bước</button></details>
+<p id="status">Đang nạp bộ não ngôn ngữ…</p><script type="module" src="conversation.mjs"></script></body></html>

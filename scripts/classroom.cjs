@@ -32,6 +32,20 @@ app.whenReady().then(async () => {
   });
   window.webContents.setWindowOpenHandler(() => ({action: 'deny'}));
   window.webContents.on('will-navigate', event => event.preventDefault());
-  await window.loadFile(path.join(__dirname, '../frontend/src/classroom/index.html'));
+  ipcMain.handle('dialogue:load',async event=>{
+    if(event.sender.id!==window.webContents.id)throw new Error('Unknown sender');
+    const directory=process.env.POKEMON_LANGUAGE_DIR||path.join(__dirname,'../outputs/language');
+    try{return JSON.parse(await fs.readFile(path.join(directory,'dialogue-pair.json'),'utf8'));}
+    catch(error){if(error.code!=='ENOENT')throw error;return JSON.parse(await fs.readFile(path.join(directory,'conditioned-model.json'),'utf8'));}
+  });
+  ipcMain.handle('dialogue:save',async(event,payload)=>{
+    if(event.sender.id!==window.webContents.id||typeof payload!=='string'||payload.length>4*1024*1024)throw new Error('Invalid dialogue checkpoint');
+    const data=JSON.parse(payload),{ConditionedRNN}=await import('../language/conditioned-rnn.mjs');
+    ConditionedRNN.restore(data.A);ConditionedRNN.restore(data.B);
+    const directory=process.env.POKEMON_LANGUAGE_DIR||path.join(__dirname,'../outputs/language');
+    await fs.writeFile(path.join(directory,'dialogue-pair.json.tmp'),payload);
+    await fs.rename(path.join(directory,'dialogue-pair.json.tmp'),path.join(directory,'dialogue-pair.json'));return true;
+  });
+  await window.loadFile(path.join(__dirname, process.argv.includes('--conversation')?'../frontend/src/classroom/conversation.html':'../frontend/src/classroom/index.html'));
 });
 app.on('window-all-closed', () => app.quit());
