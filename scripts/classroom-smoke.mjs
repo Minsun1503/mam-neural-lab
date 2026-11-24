@@ -1,0 +1,62 @@
+import {createRequire} from 'node:module';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import os from 'node:os';
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+
+const require = createRequire(new URL('../package.json', import.meta.url));
+const {_electron} = require('playwright');
+const root = fileURLToPath(new URL('../', import.meta.url));
+const electron = createRequire(new URL('../package.json', import.meta.url))('electron');
+const profile = await fs.mkdtemp(path.join(os.tmpdir(), 'pokemon-classroom-test-'));
+const env = {...process.env, POKEMON_CLASSROOM_PROFILE: profile};
+delete env.ELECTRON_RUN_AS_NODE;
+const app = await _electron.launch({executablePath: electron, args: [path.join(root, 'scripts/classroom.cjs')], env});
+const failures = [];
+try {
+  const page = await app.firstWindow();
+  page.on('pageerror', error => failures.push(error.message));
+  await page.waitForSelector('#policy .policy-row');
+  assert.equal(await page.locator('#policy .policy-row').count(), 20);
+  await page.locator('#exam').click();
+  await page.waitForFunction(() => !document.querySelector('#train').disabled);
+  const initial = await page.locator('#score').innerText();
+  await page.locator('#auto-teach').click();
+  await page.waitForFunction(() => !document.querySelector('#auto-teach').disabled,null,{timeout:120000});
+  const result = await page.locator('#score').innerText();
+  assert.notEqual(initial, result);
+  assert.ok((await page.locator('#action-status').innerText()).includes('Đã đạt chuẩn'));
+  const learned = await page.locator('#examples').innerText();
+  assert.notEqual(learned, '0');
+  await page.locator('#lesson').selectOption('18');
+  await page.locator('#practice').click();
+  await page.waitForFunction(() => !document.querySelector('#practice').disabled);
+  assert.ok((await page.locator('#journal').innerText()).includes('Đã kiểm chứng mục tiêu hoàn thành'));
+  const actual = await page.locator('#sandbox-state').innerText();
+  assert.ok(actual.includes('bai-hoc-'));
+  await page.locator('#save').click();
+  await page.reload();
+  await page.waitForSelector('#policy .policy-row');
+  assert.equal(await page.locator('#examples').innerText(), learned);
+  assert.ok((await page.locator('#journal').innerText()).includes('KHÔI PHỤC'));
+  assert.ok((await page.locator('#student-status').innerText()).includes('Đạt chuẩn'));
+  const output = path.join(root, 'outputs/classroom'); await fs.mkdir(output, {recursive: true});
+  await page.setViewportSize({width: 1440, height: 960});
+  await page.screenshot({path: path.join(output, 'classroom.png'), fullPage: true});
+  await page.setViewportSize({width: 1060, height: 760});
+  await page.screenshot({path: path.join(output, 'classroom-compact.png'), fullPage: true});
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow at minimum size');
+  // Check pause stops training, rather than merely changing its label.
+  await page.locator('#train').click();
+  await page.locator('#stop').click();
+  await page.waitForFunction(() => !document.querySelector('#train').disabled);
+  const stopped = await page.locator('#examples').innerText();
+  await page.waitForTimeout(150);
+  assert.equal(await page.locator('#examples').innerText(), stopped);
+  assert.deepEqual(failures, []);
+  const report = {initial, afterCurriculum: result, learnedUpdates: learned, pausedUpdates: stopped, rendererErrors: failures,
+    verified: ['20-lesson mastery', 'autonomous write-save-close-reopen episode', 'checkpoint reload', 'pause', 'minimum viewport']};
+  await fs.writeFile(path.join(output, 'smoke.json'), JSON.stringify(report, null, 2));
+  console.log(JSON.stringify(report));
+} finally { await app.close(); }

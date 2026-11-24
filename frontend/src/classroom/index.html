@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'">
+  <title>Mầm Lab • Phòng học nơ-ron</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="rail">
+    <div class="brand"><span class="brand-mark">◈</span><div>MẦM LAB<span>NEURAL CLASSROOM</span></div></div>
+    <div class="rail-label">KHÔNG GIAN HỌC TẬP</div>
+    <div class="nav active">▦ <span>Phòng học đầu tiên</span><span class="badge">01</span></div>
+    <div class="student"><div class="pet"><span id="pet-image" aria-hidden="true">◈</span><span id="pet-fallback" hidden>◈</span></div><div class="student-name">Mầm <span class="live-dot"></span></div><p id="student-status">Chưa được dạy · Sẵn sàng khám phá</p><div class="stage">NƠ-RON RIÊNG · V0.2</div></div>
+    <div class="rail-label">CHƯƠNG TRÌNH</div>
+    <div id="curriculum"></div>
+    <div class="rail-note"><strong>Máy tính là môi trường sống.</strong><p>Tool là tay chân. Kiến thức đến từ trải nghiệm.</p><small>Bản này chỉ thao tác desktop giả.</small></div>
+  </aside>
+  <main>
+    <header><div><div class="eyebrow">THÍ NGHIỆM 001 / HỌC TỪ LÀM MẪU</div><h1>Một bộ não nhỏ. Một khởi đầu mới.</h1><p>Quan sát → dự đoán → thực hành → kiểm chứng.</p></div><div class="local-pill"><span class="live-dot"></span> Local · CPU · Không API</div></header>
+    <section class="metrics" aria-label="Số đo thực tế">
+      <div><span>VÍ DỤ ĐÃ HỌC</span><strong id="examples">0</strong><small>cập nhật bằng backpropagation</small></div>
+      <div><span>KẾT QUẢ THI</span><strong id="score">—</strong><small id="score-note">400 tình huống chưa dùng để dạy</small></div>
+      <div><span>TRỌNG SỐ & BIAS</span><strong id="memory">3.1 <em>KiB</em></strong><small>không gồm Electron / dữ liệu / bộ nhớ tạm</small></div>
+      <div><span>SUY LUẬN / BƯỚC</span><strong id="latency">—</strong><small>median thực đo · không tính tool</small></div>
+    </section>
+    <section class="workspace">
+      <div class="panel desktop-panel"><div class="panel-title"><span><i class="mint-dot"></i>DESKTOP GIẢ</span><span id="episode-tag">Lượt #1</span></div>
+        <div class="mission"><span>MỤC TIÊU HIỆN TẠI</span><strong id="mission"></strong><small id="mission-detail"></small></div>
+        <div class="desktop" id="desktop"><div class="wallpaper-word">MẦM<span>a little world to learn in</span></div><div class="desktop-icons"><button id="icon-browser">◉<span>Trình duyệt</span></button><button id="icon-notes">▤<span>Ghi chú</span></button></div><div id="app-window"></div><div class="taskbar"><span>◈</span><span>◉</span><span>▤</span><small>Sandbox · Không truy cập máy thật</small><span>09:41</span></div></div>
+        <div class="action-line"><span class="status-light"></span><span id="action-status">Bắt đầu bằng “Thầy làm mẫu” hoặc đo năng lực ban đầu.</span></div>
+        <div class="sandbox-state" id="sandbox-state"></div>
+        <div class="controls"><button class="primary" id="auto-teach">ϟ Học đến khi đạt chuẩn</button><button id="train">Dạy thêm 300 lượt</button><button id="practice">▷ Tự làm từng bước</button><button id="exam">◎ Thi độc lập</button><button id="stop" disabled>Ⅱ Dừng</button></div>
+        <div class="lesson-controls"><label>Bài học <select id="lesson"></select></label><button id="new-world">↻ Đổi tình huống</button><button id="teach-step">Dạy 1 bước</button></div>
+      </div>
+      <div class="panel brain-panel"><div class="panel-title"><span>◌ BỘ NÃO ĐANG HOẠT ĐỘNG</span><span class="tag">64 → 64 → 20</span></div><div class="brain-labels"><span>QUAN SÁT</span><span>LIÊN KẾT HỌC ĐƯỢC</span><span>TOOL</span></div><canvas id="network" aria-label="Hoạt động mạng nơ-ron và trọng số kết nối"></canvas><div class="network-legend"><span><i class="mint-dot"></i>Tín hiệu dương</span><span><i class="purple-dot"></i>Tín hiệu âm</span><span>Độ đậm = độ mạnh</span></div><div class="policy-title">QUYẾT ĐỊNH CỦA MẠNG <span id="loss">Chưa học</span></div><div id="policy"></div><p class="honesty">20 tool · cuộn để xem mọi đầu ra. Trọng số học thật; cấu trúc còn cố định. Đầu vào có cấu trúc, tham số văn bản do adapter gắn từ yêu cầu.</p></div>
+    </section>
+    <section class="bottom"><div class="panel journal"><div class="panel-title"><span>↳ NHẬT KÝ TRẢI NGHIỆM</span><span id="mode">Sẵn sàng</span></div><div id="journal" role="log" aria-live="polite"></div></div><div class="panel progress"><div class="panel-title"><span>⌁ ĐO TIẾN BỘ</span><div><button id="export-brain">Xuất trọng số</button> <button id="save">Lưu bộ não</button></div></div><div id="comparison"><p>Đo trước khi dạy và sau khi dạy trên cùng bộ đề giữ lại.</p><div class="empty-chart">Chưa có kết quả thi</div></div><div class="storage"><span id="storage-status">Tự lưu sau mỗi buổi học trên máy này</span><button id="reset">Tạo não mới</button></div></div></section>
+    <div id="transfer-status" class="transfer-status">Thực hành trên ứng dụng độc lập: chưa có kết quả khớp bộ não đang mở.</div>
+    <footer>20 bài thao tác cơ bản trong sandbox. Thi không xem đáp án, không học trong lúc thi. Chưa hiểu ngôn ngữ tự do / hình ảnh và chưa chứng minh làm được trên mọi ứng dụng thật. Research hiện chỉ gửi yêu cầu tới thầy.</footer>
+  </main>
+  <dialog id="reset-dialog"><h2>Tạo một bộ não mới?</h2><p>Trọng số và lịch sử học đã lưu của phòng học này sẽ được thay thế.</p><div><button id="cancel-reset">Giữ lại</button><button id="confirm-reset" class="primary">Tạo não mới</button></div></dialog>
+  <script type="module" src="app.mjs"></script>
+</body></html>
