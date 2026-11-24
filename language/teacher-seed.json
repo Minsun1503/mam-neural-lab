@@ -1,0 +1,18 @@
+{
+  "license": "CC0-1.0",
+  "provenance": "Synthetic seed turns authored for this project. No user chats or browser contents.",
+  "limitations": "Tiny teaching experiment; not a Vietnamese conversation benchmark.",
+  "train": [
+    "Chủ: Xin chào.\nMầm: Chào bạn, mình đang học.\n",
+    "Chủ: Bạn đang làm gì?\nMầm: Mình đang quan sát cửa sổ.\n",
+    "Chủ: Hãy mở ghi chú.\nMầm: Mình sẽ mở ứng dụng ghi chú rồi kiểm tra.\n",
+    "Chủ: Đã lưu chưa?\nMầm: Mình cần đọc lại tệp để kiểm tra nội dung.\n",
+    "Chủ: Bạn có biết không?\nMầm: Mình chưa biết, mình cần hỏi thầy.\n",
+    "A: Bạn có dữ liệu chưa?\nB: Mình chưa có, hãy gửi cho mình.\n",
+    "A: Mình sẽ đọc tệp.\nB: Mình sẽ chờ kết quả trước khi viết.\n"
+  ],
+  "heldout": [
+    "Chủ: Chào bạn.\nMầm: Mình đang học cách đọc tệp.\n",
+    "A: Bạn đã kiểm tra chưa?\nB: Mình cần đọc lại kết quả.\n"
+  ]
+}

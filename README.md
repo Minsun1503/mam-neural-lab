@@ -22,7 +22,7 @@ The classroom trains a 64 → 64 → 20 neural policy from demonstrations, then 
 2. Learned Vietnamese generation and comprehension with honest held-out conversation evaluation.
 3. Two independent brains, explicit communication, and cooperative tasks tested against communication-disabled baselines.
 
-Stages 2 and 3 are not implemented yet. Fixed dialogue templates must not be presented as learned language.
+Stage 2 has an initial character-level recurrent neural experiment in `language/`. Run `node scripts/language-experiment.mjs`; it trains from the public synthetic CC0 seed corpus and writes local checkpoints and generated samples. It learns character patterns but currently produces malformed, weakly conditioned replies. It is **not conversational competence**. Stage 3 is not implemented yet. Fixed dialogue templates must not be presented as learned language.
 
 ## Attribution and data
 
