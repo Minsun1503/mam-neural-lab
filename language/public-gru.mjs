@@ -40,9 +40,25 @@ export class PublicDialogueGRU {
     for(let v=0;v<logits.length;v++){let score=bias[v];for(let i=0;i<state.length;i++)score+=weights[v*width+i]*state[i]+weights[v*width+state.length+i]*weighted[i];logits[v]=score;}
     return {state,logits,attention:attention.map(a=>a/sum)};
   }
-  reply(prompt,maximum=96){
+  *steps(prompt,maximum=96){
+    if(!Number.isInteger(maximum)||maximum<1||maximum>256)throw new Error('Invalid generation limit');
     const ids=this.tokenizer.encode(prompt).slice(-192);if(!ids.length)throw new Error('Empty prompt');const encoded=this.encode(ids),tokens=[];let hidden=encoded.hidden,token=1;
-    for(let i=0;i<maximum;i++){const result=this.decode(token,hidden,encoded.context);hidden=result.state;let best=0;for(let v=1;v<result.logits.length;v++)if(result.logits[v]>result.logits[best])best=v;token=best;if(token===2)break;tokens.push(token);}
-    return {text:this.tokenizer.decode(tokens),tokens:tokens.length,maximumReached:tokens.length===maximum};
+    for(let i=0;i<maximum;i++){
+      const result=this.decode(token,hidden,encoded.context);hidden=result.state;let best=0;
+      for(let v=1;v<result.logits.length;v++)if(result.logits[v]>result.logits[best])best=v;
+      token=best;if(token!==2)tokens.push(token);
+      const probabilities=Array.from(result.logits,value=>Math.exp(value-result.logits[best])),sum=probabilities.reduce((a,b)=>a+b,0);
+      for(let j=0;j<probabilities.length;j++)probabilities[j]/=sum;
+      const candidates=probabilities.map((probability,id)=>({id,piece:this.tokenizer.pieces[id].piece,probability})).sort((a,b)=>b.probability-a.probability||a.id-b.id).slice(0,5);
+      yield {step:i+1,id:token,piece:this.tokenizer.pieces[token].piece,text:this.tokenizer.decode(tokens),tokens:tokens.length,
+        source:ids.map(id=>({id,piece:this.tokenizer.pieces[id].piece})),attention:result.attention,hidden:Array.from(hidden),candidates,
+        probability:probabilities[token],entropy:probabilities.reduce((total,p)=>total-(p>0?p*Math.log2(p):0),0),
+        ended:token===2,maximumReached:token!==2&&i+1===maximum};
+      if(token===2)break;
+    }
+  }
+  reply(prompt,maximum=96){
+    let last;for(const step of this.steps(prompt,maximum))last=step;
+    return {text:last.text,tokens:last.tokens,maximumReached:last.maximumReached};
   }
 }

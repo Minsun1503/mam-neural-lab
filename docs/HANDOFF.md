@@ -32,6 +32,7 @@ python training/transfer.py verify
 python training/transfer.py restore
 node scripts/public-gru-parity.mjs multiturn
 npm run chat:research -- "Xin chào, bạn có thể giúp tôi học không?"
+npm run inspect:brain
 ```
 
 `fetch` tải đúng ZIP từ URL GitHub Release được ghim trong `checkpoints/release.json`, kiểm tra kích thước và SHA-256. `verify`/`restore` còn kiểm tra checksum từng file bên trong. ZIP local được Git bỏ qua. `restore` từ chối ghi đè file khác nội dung. Nếu máy đích đã có kết quả riêng, dùng `--directory` để khôi phục sang thư mục khác và tự chọn kết quả cần tiếp tục. Bản JavaScript mặc định đọc `outputs/public-language-multiturn/browser-model.json`, tương ứng **best.pt sau một epoch hoàn chỉnh**, còn `latest.pt` có thể mới hơn giữa epoch. Xem `progress.json` và `SNAPSHOT.json` để biết chính xác vị trí đang dừng.
@@ -89,6 +90,6 @@ Script chỉ lấy danh sách file public cho phép; không gom toàn bộ `outp
 1. **Tiếng Việt tổng quát:** hoàn tất và đánh giá ứng viên lớn hơn trên câu chưa học; đánh giá độ đúng chủ đề, ngữ pháp, lặp, ghi nhớ nhiều lượt, phủ định và trạng thái nhiệm vụ. Baseline corpus nhỏ sau 25 epoch vẫn trả lời lạc đề. Chưa có bằng chứng ứng viên lớn đạt mục tiêu; không dùng loss thay cho đánh giá hội thoại.
 2. **Hai bộ não hội thoại riêng:** chỉ tích hợp ứng viên khi chất lượng đạt; giữ trọng số, lịch sử, cập nhật và checkpoint A/B độc lập. Hiện A/B dùng mô hình nhỏ theo tám nhóm hội thoại, có sửa riêng từng tác nhân nhưng chưa trò chuyện mở tốt.
 3. **Phối hợp mở rộng:** hiện đạt 40/40 lượt chuyển file ở giao thức hẹp; tắt/khuấy kênh liên lạc thì 0/40. Phần trích/chèn nội dung trong dấu ngoặc vẫn là adapter rõ ràng. Cần thêm nhiều loại nhiệm vụ, vai trò mới và lỗi bất ngờ; chưa được gọi là phối hợp tổng quát.
-4. **Quan sát việc suy nghĩ:** cần hiển thị token, attention, hành động dự đoán, độ tin cậy và kết quả thực tế theo từng bước. Những tín hiệu quan sát được này không phải bản ghi đầy đủ suy nghĩ hay ý thức. Bộ suy luận public-GRU đã trả attention ở từng bước nhưng chưa có giao diện visual tương ứng.
+4. **Quan sát việc suy nghĩ:** đã có `npm run inspect:brain` hiển thị token, xác suất, entropy, attention và toàn bộ trạng thái ẩn theo từng bước, có tạm dừng/xem lại. Xem [giới hạn của màn hình](brain-inspector.md). Cần tiếp tục nối tín hiệu ngôn ngữ với hành động và kết quả nhiệm vụ trong cùng một lượt phối hợp. Những tín hiệu quan sát được này không phải bản ghi đầy đủ suy nghĩ hay ý thức.
 
 Mục tiêu chung vẫn đang mở; snapshot này giúp tiếp tục công việc thay vì bắt đầu lại.

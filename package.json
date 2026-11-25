@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "electron scripts/classroom.cjs",
-    "test": "node --test scripts/classroom.test.mjs tests/language.test.mjs tests/dialogue.test.mjs tests/turn-memory.test.mjs tests/cooperation.test.mjs tests/subword.test.mjs",
+    "test": "node --test scripts/classroom.test.mjs tests/language.test.mjs tests/dialogue.test.mjs tests/turn-memory.test.mjs tests/cooperation.test.mjs tests/subword.test.mjs tests/public-gru-trace.test.mjs",
     "train": "node scripts/classroom-train.mjs",
     "test:ui": "node scripts/classroom-smoke.mjs",
     "test:transfer": "node scripts/classroom-transfer.mjs",
@@ -17,7 +17,9 @@
     "train:context": "node scripts/language-context.mjs",
     "test:cooperation": "node --test tests/cooperation.test.mjs",
     "test:public-gru": "node scripts/public-gru-parity.mjs",
-    "chat:research": "node scripts/public-gru-chat.mjs"
+    "chat:research": "node scripts/public-gru-chat.mjs",
+    "inspect:brain": "electron scripts/classroom.cjs --inspect-brain",
+    "test:inspector:ui": "node scripts/inspector-smoke.mjs"
   },
   "devDependencies": {
     "electron": "42.11.18",

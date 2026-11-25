@@ -5,4 +5,5 @@ contextBridge.exposeInMainWorld('classroomFiles',{
   loadDialogue:()=>ipcRenderer.invoke('dialogue:load'),
   saveDialogue:payload=>ipcRenderer.invoke('dialogue:save',payload),
   runCooperation:()=>ipcRenderer.invoke('cooperation:run'),
+  loadResearch:()=>ipcRenderer.invoke('research:load'),
 });

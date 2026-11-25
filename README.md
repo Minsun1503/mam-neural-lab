@@ -32,6 +32,8 @@ For broader language research, [the optional CPU training branch](docs/public-la
 
 **Continuing on another computer:** follow [docs/HANDOFF.md](docs/HANDOFF.md) to restore the checkpoint, try the JavaScript candidate, resume CPU training and see unfinished milestones.
 
+Run `npm run inspect:brain` after restoring the research checkpoint to inspect generated tokens, token probabilities, attention and all decoder hidden values one step at a time. See [the inspector's scope](docs/brain-inspector.md); observable computation is not a complete explanation of thoughts or proof of language competence.
+
 ## Attribution and data
 
 Extracted classroom code is derived from Minsun1503/pokemon-companion (MIT); see LICENSE and NOTICE.md. No Pokémon graphics, browser sessions, credentials, private checkpoints or personal conversation logs are bundled. `outputs/` contains only locally generated artifacts and is ignored by Git.
