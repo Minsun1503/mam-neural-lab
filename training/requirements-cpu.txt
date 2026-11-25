@@ -1,0 +1,3 @@
+# Install torch from its official CPU index separately; see docs/public-language.md.
+sentencepiece==0.2.3
+protobuf==7.36.2

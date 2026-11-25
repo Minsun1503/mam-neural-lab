@@ -6,3 +6,8 @@ outputs/
 *.log
 *.tmp
 .DS_Store
+.venv*/
+data/external/
+__pycache__/
+*.pyc
+checkpoints/*.zip

@@ -1,0 +1,7 @@
+# Public research snapshot
+
+`public-language-multiturn.zip` contains only the allowlisted artifacts from `training/transfer.py`: random-initialized attention-GRU weights trained on public data, optimizer/batch state, the training-only tokenizer, numerical reference vectors, metrics and data provenance. It contains no private browser sessions, user conversations, manually corrected A/B brains, virtual environment or raw corpus.
+
+Artifact license: Apache License 2.0 (see `LICENSE-APACHE-2.0.txt`). Copyright 2026 Minsun1503, for project-produced artifacts. Upstream training data: 5CD-AI/Vietnamese-Multi-turn-Chat-Alpaca, upstream-declared Apache-2.0, revision `3a1bef5b6681fe78eeaa25a97c4da1a2a1145a9e`, source SHA-256 `0a2f893e6bf435f30415428681beb234f276c93653e8ff64e9b4ad013a165825`. Source: https://huggingface.co/datasets/5CD-AI/Vietnamese-Multi-turn-Chat-Alpaca. The manifest preserves this provenance. Export/reference files are generated from that research run. Artifacts are provided without warranty, including regarding answer quality or upstream factual content.
+
+The archive is attached to [the milestone's GitHub Release](https://github.com/Minsun1503/mam-neural-lab/releases/tag/milestone-public-gru-transfer-v1). Code and the pinned artifact checksum live in Git; the checkpoint binary lives in Releases. Run `python training/transfer.py fetch` after cloning to download the matching artifact, then `python training/transfer.py restore`. No Git LFS installation is required. Verify/restore instructions and unfinished work: [HANDOFF](../docs/HANDOFF.md).

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "milestone": "Portable public-data attention-GRU CPU research checkpoint",
+  "status": "in-progress-not-conversationally-certified",
+  "latest": {
+    "completed_epochs": 1,
+    "current_epoch": 2,
+    "completed_batches_in_current_epoch": 50,
+    "batches_per_epoch": 739,
+    "parameters": 771328,
+    "stopped_safely": true
+  },
+  "best": {
+    "epoch": 1,
+    "train_loss": 4.142646184632727,
+    "validation_loss": 3.4872590219660102,
+    "seconds": 641.6564120999992
+  },
+  "inference_parity": {
+    "tokenizerCases": 56,
+    "inferenceCases": 4,
+    "maximumLogitError": 1.4691095628904804e-06,
+    "scope": "Numerical export fidelity only; not language quality"
+  },
+  "archive_sha256": "599fc57cea5d91a24b042d91d9406e1ee74cb85edfbb825cd53ff16ff000e3b1",
+  "artifact_storage": "GitHub Releases; code and pinned checksum in Git",
+  "artifact_release": "https://github.com/Minsun1503/mam-neural-lab/releases/tag/milestone-public-gru-transfer-v1",
+  "verification": {
+    "node_tests_passed": 11,
+    "python_unit_tests_passed": 3,
+    "interrupted_vs_continuous_training": "exact weights after four CPU batches",
+    "fresh_archive_restore": "11 files verified; successfully resumed batch 50 to 51 with real weight updates in an isolated directory",
+    "dialogue_ui": "independent correction, persistence, cooperation panel passed; no renderer errors"
+  },
+  "default_dialogue_model": "Unchanged small conditioned-RNN; public-GRU is an optional research candidate",
+  "next": "Resume toward 12 total epochs, evaluate held-out language quality, then decide whether to integrate into separate A/B brains",
+  "handoff": "docs/HANDOFF.md"
+}
